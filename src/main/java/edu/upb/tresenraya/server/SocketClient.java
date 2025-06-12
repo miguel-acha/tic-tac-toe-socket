@@ -10,6 +10,7 @@ import edu.upb.tresenraya.command.CierreConexion;
 import edu.upb.tresenraya.command.Comando;
 import edu.upb.tresenraya.command.JugadaExtra;
 import edu.upb.tresenraya.command.Marcar;
+import edu.upb.tresenraya.command.Mensaje;
 import edu.upb.tresenraya.command.NuevaPartida;
 import edu.upb.tresenraya.command.RechazoConexion;
 import edu.upb.tresenraya.command.RechazoJuego;
@@ -39,7 +40,6 @@ public class SocketClient extends Thread {
     private DataOutputStream dout;
     private BufferedReader br;
     private boolean conectado = true; // Añade este campo
-    
 
     public SocketClient(Socket socket) throws IOException {
         this.socket = socket;
@@ -87,7 +87,9 @@ public class SocketClient extends Thread {
                     c = new CierreConexion();
                 } else if (message.contains("0011")) {
                     c = new JugadaExtra();
-                } 
+                } else if (message.contains("0012")) {
+                    c = new Mensaje();
+                }
                 if (c != null) {
                     try {
                         c.parsear(message);
@@ -120,7 +122,7 @@ public class SocketClient extends Thread {
             e.printStackTrace();
         }
     }
-    
+
     public void detener() {
         if (this.socket != null) {
             try {

@@ -9,6 +9,7 @@ import edu.upb.tresenraya.command.AceptacionJuego;
 import edu.upb.tresenraya.command.Comando;
 import edu.upb.tresenraya.command.JugadaExtra;
 import edu.upb.tresenraya.command.Marcar;
+import edu.upb.tresenraya.command.Mensaje;
 import edu.upb.tresenraya.command.RechazoConexion;
 import edu.upb.tresenraya.command.RechazoJuego;
 import edu.upb.tresenraya.command.SolicitudConexion;
@@ -122,7 +123,7 @@ public class TresEnRayaUI extends javax.swing.JFrame implements OnMessageListene
         //jListNombres.setModel(modeloLista);
         backgroundMusicClip = Audio.playMusicLoop("/sounds/fondo.wav", 0.05f, sonidoSilenciado);
         jugadorModel = new DefaultListModel<>(); // Inicializa jugadorModel 
-
+        chatArea.setEditable(false);
         juegoTerminado = false;
 
         if (soyInvitante) {
@@ -326,6 +327,7 @@ public class TresEnRayaUI extends javax.swing.JFrame implements OnMessageListene
         jDialog1 = new javax.swing.JDialog();
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
+        jButton2 = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
         btnServer = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
@@ -343,6 +345,10 @@ public class TresEnRayaUI extends javax.swing.JFrame implements OnMessageListene
         jlMessage = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        chatInput = new javax.swing.JTextField();
+        sendButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        chatArea = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         jListNombres = new javax.swing.JList<>();
 
@@ -356,6 +362,8 @@ public class TresEnRayaUI extends javax.swing.JFrame implements OnMessageListene
             jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 300, Short.MAX_VALUE)
         );
+
+        jButton2.setText("jButton2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -449,23 +457,58 @@ public class TresEnRayaUI extends javax.swing.JFrame implements OnMessageListene
         ));
         jScrollPane3.setViewportView(jTable2);
 
+        chatInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chatInputActionPerformed(evt);
+            }
+        });
+
+        sendButton.setBackground(new java.awt.Color(102, 255, 102));
+        sendButton.setForeground(new java.awt.Color(255, 255, 255));
+        sendButton.setText(">");
+        sendButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendButtonActionPerformed(evt);
+            }
+        });
+
+        chatArea.setColumns(20);
+        chatArea.setRows(5);
+        chatArea.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jScrollPane2.setViewportView(chatArea);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jlMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(chatInput, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(sendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(26, 26, 26))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(chatInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sendButton))
+                .addGap(21, 21, 21)
                 .addComponent(jlMessage)
                 .addContainerGap())
         );
@@ -638,6 +681,28 @@ public class TresEnRayaUI extends javax.swing.JFrame implements OnMessageListene
         aboutDialog.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
+        String mensaje = chatInput.getText().trim();
+        if (!mensaje.isEmpty() && socketClient != null) {
+            try {
+                // Crear y enviar el comando Mensaje
+                edu.upb.tresenraya.command.Mensaje comandoMensaje = new edu.upb.tresenraya.command.Mensaje(mensaje);
+                socketClient.send(comandoMensaje.getComando().getBytes());
+
+                // Mostrar el mensaje en el área de texto del chat
+                chatArea.append("Yo: " + mensaje + System.lineSeparator());
+                chatInput.setText(""); // Limpiar el campo de entrada
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error al enviar mensaje: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_sendButtonActionPerformed
+
+    private void chatInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chatInputActionPerformed
+        // Llama al método sendButtonActionPerformed para enviar el mensaje al presionar Enter
+        sendButtonActionPerformed(null);
+    }//GEN-LAST:event_chatInputActionPerformed
+
     private void invitarUsuario(String usuario) {
         JOptionPane.showMessageDialog(null, "Invitación enviada a: " + usuario);
     }
@@ -681,7 +746,10 @@ public class TresEnRayaUI extends javax.swing.JFrame implements OnMessageListene
     private javax.swing.JButton btnServer;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JTextArea chatArea;
+    private javax.swing.JTextField chatInput;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonAgregarJugador;
     private javax.swing.JButton jButtonInvitacion;
     private javax.swing.JButton jButtonNuevaPartida;
@@ -689,6 +757,7 @@ public class TresEnRayaUI extends javax.swing.JFrame implements OnMessageListene
     private javax.swing.JList<Jugador> jListNombres;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
@@ -700,6 +769,7 @@ public class TresEnRayaUI extends javax.swing.JFrame implements OnMessageListene
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel jlMessage;
+    private javax.swing.JButton sendButton;
     // End of variables declaration//GEN-END:variables
 
     private final Set<String> posicionesMarcadas = new HashSet<>();
@@ -908,6 +978,15 @@ public class TresEnRayaUI extends javax.swing.JFrame implements OnMessageListene
             }
 
         }*/
+        if (c.getCodigoComando().equals("0012")) {
+            Mensaje mensajeRecibido = (Mensaje) c;
+            String contenido = mensajeRecibido.getContenido();
+
+            // Muestra el mensaje en el área de texto del chat
+            SwingUtilities.invokeLater(() -> {
+                chatArea.append("Otro: " + contenido + System.lineSeparator());
+            });
+        }
     }
 
     @Override
@@ -1085,6 +1164,23 @@ public class TresEnRayaUI extends javax.swing.JFrame implements OnMessageListene
             Desktop.getDesktop().browse(new URI(url));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void enviarMensaje() {
+        String mensaje = chatInput.getText().trim();
+        if (!mensaje.isEmpty() && socketClient != null) {
+            try {
+                // Crear y enviar el comando Mensaje
+                Mensaje comandoMensaje = new Mensaje(mensaje);
+                socketClient.send(comandoMensaje.getComando().getBytes());
+
+                // Mostrar el mensaje en el área de texto del chat
+                chatArea.append("Yo: " + mensaje + System.lineSeparator());
+                chatInput.setText(""); // Limpiar el campo de entrada
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error al enviar mensaje: " + e.getMessage());
+            }
         }
     }
 }
